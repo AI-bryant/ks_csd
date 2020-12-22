@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block head %}
+	<title>蓝鲸开发框架</title>
+    <link href="https://magicbox.bk.tencent.com/static_api/v3/bk/css-pro/bk.css" rel="stylesheet">
+	{{ block.super }}
+{% endblock %}
+
+{% block navigation %}
+	<li class=""><a href="{{ SITE_URL }}"><span>首页</span></a></li>
+	<li class="king-navbar-active"><a href="{{ SITE_URL }}contact/"><span>联系我们</span></a></li>
+{% endblock %}
+
+{% block content %}
+	<div class="bk-tree">
+    <ul class="tree-content">
+        <li class="folder">
+            <a href="javascript:;"><i class="tree-icon"></i> 集群[批量启动进程模块1]</a>
+            <ul class="tree-secondary">
+                <li class="file">
+                    <a href="javascript:;"><i class="tree-icon"></i>testwa.fda.1.1</a>
+                </li>
+                <li class="file">
+                    <a href="javascript:;"><i class="tree-icon"></i>testwa.fda.1.2</a>
+                </li>
+                <li class="file">
+                    <a href="javascript:;"><i class="tree-icon"></i>testwa.fda.1.3</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+   <script src="{{ REMOTE_STATIC_URL }}v3/assets/js/jquery-1.10.2.min.js"></script>
+    <script>
+    $('.bk-tree').on('click', 'a', function(event) {
+    if($(this).parent('li').hasClass('file')){
+        $('.file').removeClass('open');
+    }
+    $(this).parent('li').toggleClass('open');
+});
+    </script>
+{% endblock %}

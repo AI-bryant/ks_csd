@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CMDB信息自动更新</title>
+    <!-- 引入样式 -->
+<!--    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">-->
+    <link href="{{STATIC_URL}}vue/css/materialdesignicons.min.css" rel="stylesheet">
+    <!-- vuetify -->
+    <link href="{{STATIC_URL}}vue/css/vuetify.min.css" rel="stylesheet">
+    <!-- element -->
+    <link rel="stylesheet" href="{{STATIC_URL}}vue/element/index.css">
+<!--    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <style>
+        {#// deep-purple accent-4 teal#}
+        .v-divider{
+        }
+
+        .finished {
+            border-width: 5px;
+            background-color: #009688 !important; // #6200EA
+        }
+
+        .unfinish {
+            border-width: 1px;
+            background-color: rgba(0, 0, 0, .87) !important;
+        }
+    </style>
+</head>
+<body>
+        <v-app id="app">
+
+            <!-- 主导航 -->
+            <v-app-bar
+              color="teal"
+              dense
+              dark
+              style="height: 50px !important;position: absolute"
+            >
+              <v-toolbar-title>CMDB信息自动更新</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn v-bind="attrs" v-on="on"> {{ user }} </v-btn>
+                </template>
+                    <span>当前用户</span>
+              </v-tooltip>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn  v-bind="attrs" v-on="on" icon @click="location.reload()"> <v-icon>mdi-help</v-icon> </v-btn>
+                </template>
+                <span>帮助</span>
+              </v-tooltip>
+            </v-app-bar>
+
+            <!-- 内容面板 -->
+            <v-card style="margin:90px 40px 40px;height: 100%;">
+                <v-tabs background-color="white" color="teal" vertical>
+                      <v-tab>首页</v-tab>
+                      <v-tab>中间件</v-tab>
+{#                      <v-tab>宿主机</v-tab>#}
+{#                      <v-tab>数据库</v-tab>#}
+
+                      <!-- 首页 -->
+                      <v-tab-item>
+                        <v-container fluid>
+                          <v-row>
+                            <v-col>
+                                <v-expansion-panels  multiple hover focusable style="padding:40px">
+
+                                    <v-expansion-panel>
+
+                                        <v-expansion-panel-header style="color:#ffffff" color="teal">
+                                          CMDB信息自动更新介绍
+
+                                            <template v-slot:actions>
+
+                                                <v-icon color="white">$expand</v-icon>
+                                                                                   </template>
+                                                                              </v-expansion-panel-header>
+
+                                        <v-expansion-panel-content>
+
+                                            <ul style="margin-top:15px">
+
+                                                <li>手动触发模型实例信息的自动更新操作</li>
+
+
+
+
+
+                                                                                    </ul>
+                                                                                  </v-expansion-panel-content>
+                                                                           </v-expansion-panel>
+                                    </v-expansion-panels>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-tab-item>
+
+
+                    <!-- 中间件 -->
+                        <v-tab-item>
+                        <v-container fluid>
+                          <v-row>
+                              
+                            <v-col>
+                                <v-btn
+                                  color="amber darken-1"
+                                  dark
+                                  class="mb-2"
+                                  @click="zjjJob"
+                                >作业</v-btn>
+                                <v-btn
+                                  color="amber darken-1"
+                                  dark
+                                  class="mb-2"
+                                  @click="zjjZX"
+                                >执行</v-btn>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-tab-item>
+                    <!-- 宿主机 -->
+                        <v-tab-item>
+                        <v-container fluid>
+                          <v-row>
+                            <v-col>
+
+                                <v-btn
+                                  color="amber darken-1"
+                                  dark
+                                  class="mb-2"
+
+
+                                  @click="initAllStep('new')"
+                                >执行</v-btn>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-tab-item>
+                    <!-- 数据库 -->
+                        <v-tab-item>
+                        <v-container fluid>
+                          <v-row>
+                            <v-col>
+
+                                <v-btn
+                                  color="amber darken-1"
+                                  dark
+                                  class="mb-2"
+
+
+                                  @click="initAllStep('new')"
+                                >执行</v-btn>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-tab-item>
+                </v-tabs>
+            </v-card>
+        </v-app>
+    <script src="{{STATIC_URL}}vue/js/vue.js"></script>
+    <script src="{{ REMOTE_STATIC_URL }}v3/assets/js/jquery-1.10.2.min.js"></script>
+    <script src="{{STATIC_URL}}vue/js/vuetify.js"></script>
+    <script src="{{STATIC_URL}}vue/js/axios.min.js"></script>
+        <!-- 引入组件库 -->
+    <script src="{{STATIC_URL}}vue/element/index.js"></script>
+    <script>
+        window.onload = function () {
+                new Vue({
+                    el: '#app',
+                    vuetify: new Vuetify(),
+                    components: {}, //procurement
+                    data () {
+                        return {
+
+                        }
+                    },
+                    computed: {
+
+                    },
+                    watch: {
+
+                    },
+                    created () {
+                    },
+                    methods: {
+                        zjjJob(){
+                            axios.get('{{ SITE_URL }}getB').then((res)=>{
+
+                                if(res.status !== 200){
+                                    this.$message.error('作业失败')
+                                }
+                            }).catch((err)=>{
+                                console.log(err)
+                            })
+                        },
+                        zjjZX(){
+
+                            axios.get('{{ SITE_URL }}inits').then((res)=>{
+                                console.log(res)
+                                if(res.status !== 200){
+                                    this.$message.error('作业失败')
+                                }
+                            }).catch((err)=>{
+                                console.log(err)
+                            })
+                        },
+                        initAllStep(){
+                            //axios.get('{{ STATIC_URL }}getinst').then((res)=>{
+                            //    console.log(res)
+                            // })
+                        }
+
+                    },
+                    mounted () {
+
+                    }
+                })
+            }
+    </script>
+</body>
+</html>
